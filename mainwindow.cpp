@@ -8,9 +8,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    QSplitter *base = new QSplitter(this);
+    Splitter *base = new Splitter(this);
     ui->gridLayout->addWidget(base);
-    new Panel(base, "*");
+    base->addWidget(new Panel(base, "*"));
 }
 
 MainWindow::~MainWindow()

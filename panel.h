@@ -4,19 +4,22 @@
 
 #include <QtGui>
 #include <QPlainTextEdit>
-#include <QSplitter>
+#include "splitter.h"
 
 class Panel : public QPlainTextEdit
 {
     Q_OBJECT
 public:
-    explicit Panel(QSplitter *parent, const QString text = "");
+    explicit Panel(Splitter *parent, const QString text = "");
+    ~Panel();
 
 protected:
     void contextMenuEvent(QContextMenuEvent *);
 
 private:
     void create(Qt::Orientation orientation, bool reverse);
+    void swap();
+    Splitter *parentSplittter();
 };
 
 #endif // PANEL_H

@@ -11,11 +11,13 @@ CONFIG += c++11
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    panel.cpp
+    panel.cpp \
+    splitter.cpp
 
 HEADERS += \
     mainwindow.h \
-    panel.h
+    panel.h \
+    splitter.h
 
 FORMS += \
     mainwindow.ui
