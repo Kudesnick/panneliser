@@ -15,9 +15,7 @@ Splitter::Splitter(QWidget *parent):
 
 void Splitter::swap()
 {
-    QWidget *obj = widget(1);
-    insertWidget(1, widget(0));
-    insertWidget(0, obj);
+    insertWidget(0, widget(1));
 }
 
 void Splitter::rotate(Direction direct)
@@ -38,6 +36,11 @@ void Splitter::rotate(Direction direct)
             swap();
         }
     }
+}
+
+void Splitter::setRatio(const int firstPercents)
+{
+    setSizes({firstPercents * 10000, (100 - firstPercents) * 10000});
 }
 
 void Splitter::contextMenuEvent(QContextMenuEvent *event)
@@ -75,7 +78,7 @@ void Splitter::contextMenuEvent(QContextMenuEvent *event)
         item.setText(QStringLiteral("%1/%2").arg(item.val).arg(100 -  item.val));
         item.setParent(&contMenu);
         contMenu.addAction(&item);
-        connect(&item, &QAction::triggered, this, [&](){this->setSizes({item.val * 10000, (100 - item.val) * 10000});});
+        connect(&item, &QAction::triggered, this, [&](){this->setRatio(item.val);});
     }
 
     contMenu.exec(event->globalPos());

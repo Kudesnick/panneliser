@@ -11,7 +11,7 @@ class Panel : public QPlainTextEdit
     Q_OBJECT
 public:
     explicit Panel(Splitter *parent, const QString text = "");
-    ~Panel();
+    static void Remove(Panel *);
 
 protected:
     void contextMenuEvent(QContextMenuEvent *);

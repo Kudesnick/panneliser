@@ -20,6 +20,7 @@ public:
 
     void swap();
     void rotate(Direction direct = CW);
+    void setRatio(const int firstPercents = 50);
 
 protected:
     void contextMenuEvent(QContextMenuEvent *);

@@ -28,28 +28,31 @@ Panel::Panel(Splitter *parent, const QString text): QPlainTextEdit(parent)
     }
 }
 
-Panel::~Panel()
+void Panel::Remove(Panel *at)
 {
-    Splitter *prnt = parentSplittter();
-    setParent(nullptr);
+    Splitter *prnt = at->parentSplittter();
+    at->setParent(nullptr);
 
     if (true
         && prnt
         && prnt->count() >= 2
        )
     {
-        const int DelId = prnt->indexOf(this);
+        const int DelId = prnt->indexOf(at);
         const int saveId = (DelId == 0) ? 1 : 0;
 
         Splitter *newPrnt = dynamic_cast<Splitter *>(prnt->parent());
         if (newPrnt)
         {
-            prnt->widget(saveId)->setParent(newPrnt);
-            newPrnt->replaceWidget(newPrnt->indexOf(prnt), prnt->widget(saveId));
+            QWidget *savePtr = prnt->widget(saveId);
+            savePtr->setParent(newPrnt);
+            newPrnt->replaceWidget(newPrnt->indexOf(prnt), savePtr);
         }
 
         delete prnt;
     }
+
+    delete at;
 }
 
 
@@ -69,13 +72,13 @@ void Panel::create(Qt::Orientation orientation, bool reverse)
 
         if (!reverse)
         {
-            splitNew->insertWidget(0, this);
-            splitNew->insertWidget(1, panelNew);
+            splitNew->addWidget(this);
+            splitNew->addWidget(panelNew);
         }
         else
         {
-            splitNew->insertWidget(0, panelNew);
-            splitNew->insertWidget(1, this);
+            splitNew->addWidget(panelNew);
+            splitNew->addWidget(this);
         }
     }
 }
@@ -122,7 +125,7 @@ void Panel::contextMenuEvent(QContextMenuEvent *event)
 
     QAction Del("Delete", &contMenu);
     contMenu.addAction(&Del);
-    connect(&Del, &QAction::triggered, this, [&](){QTimer::singleShot(0, this, [&]{delete this;});});
+    connect(&Del, &QAction::triggered, this, [&](){QTimer::singleShot(0, this, [&]{Panel::Remove(this);});});
 
     contMenu.exec(event->globalPos());
 }
